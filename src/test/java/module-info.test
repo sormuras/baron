@@ -1,0 +1,9 @@
+// open module de.sormuras.baron {
+//   requires org.junit.jupiter.api;
+// }
+
+--add-opens
+  de.sormuras.baron/de.sormuras.baron=org.junit.platform.commons
+
+--add-reads
+  de.sormuras.baron=org.junit.jupiter.api
