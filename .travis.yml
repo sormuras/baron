@@ -1,0 +1,9 @@
+language: java
+jdk: openjdk11
+
+install: true
+script: mvn verify
+
+cache:
+  directories:
+    - $HOME/.m2
