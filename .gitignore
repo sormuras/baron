@@ -3,6 +3,7 @@
 .idea/
 .settings/
 build/
+target/
 
 # Files
 .classpath
