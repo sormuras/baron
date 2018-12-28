@@ -53,9 +53,11 @@
             <plugin>
                 <groupId>de.sormuras.junit</groupId>
                 <artifactId>junit-platform-maven-plugin</artifactId>
-                <version>1.0.0-M2</version>
+                <version>1.0.0-M3</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <!-- TODO `module-info.test` not supported in default "DIRECT" mode -->
+                    <!--      https://github.com/sormuras/junit-platform-maven-plugin/issues/21 -->
                     <executor>JAVA</executor>
                 </configuration>
             </plugin>
