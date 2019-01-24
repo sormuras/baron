@@ -16,7 +16,7 @@ public class ProjectBuilder implements Project {
     return this;
   }
 
-  public GroupBuilder groupBegin(String name) {
+  public GroupBuilder group(String name) {
     if (groups.containsKey(name)) {
       throw new IllegalArgumentException(name + " already defined");
     }

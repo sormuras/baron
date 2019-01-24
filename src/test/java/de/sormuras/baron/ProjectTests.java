@@ -22,7 +22,7 @@ class ProjectTests {
     Exception e =
         assertThrows(
             IllegalArgumentException.class,
-            () -> Project.builder().groupBegin("name").end().groupBegin("name"));
+            () -> Project.builder().group("name").end().group("name"));
     assertEquals("name already defined", e.getMessage());
   }
 
@@ -45,13 +45,13 @@ class ProjectTests {
             .version("II")
             .target(target)
             // main
-            .groupBegin("main")
+            .group("main")
             .destination(mainDestination)
             .moduleSourcePath(List.of(Path.of("src", "main", "java")))
             .mainClass(Map.of("foo", "foo.Main"))
             .end()
             // test
-            .groupBegin("test")
+            .group("test")
             .destination(testDestination)
             .moduleSourcePath(List.of(Path.of("src", "test", "java")))
             .modulePath(List.of(mainDestination, dependencies))
@@ -90,21 +90,21 @@ class ProjectTests {
             .name("greetings")
             .version("1.0.0-SNAPSHOT")
             .target(Path.of("target", "bach"))
-            .groupBegin("src")
+            .group("src")
             .destination(Path.of("target", "bach", "modules"))
             .moduleSourcePath(List.of(Path.of("src")))
             .end()
             .build();
 
     var root = Path.of("demo", "jigsaw-quick-start", "greetings");
-    var project = Project.of(root, Path.of("src"));
+    var actual = Project.of(root, Path.of("src"));
 
-    assertEquals(expected.name(), project.name());
-    assertEquals(expected.version(), project.version());
-    assertEquals(expected.target(), project.target());
-    assertEquals(expected.moduleGroups().size(), project.moduleGroups().size());
+    assertEquals(expected.name(), actual.name());
+    assertEquals(expected.version(), actual.version());
+    assertEquals(expected.target(), actual.target());
+    assertEquals(expected.moduleGroups().size(), actual.moduleGroups().size());
 
-    var src = project.moduleGroup("src");
+    var src = actual.moduleGroup("src");
     assertEquals("src", src.name());
     assertEquals(Path.of("target", "bach", "modules"), src.destination());
     assertEquals(List.of(Path.of("src")), src.moduleSourcePath());

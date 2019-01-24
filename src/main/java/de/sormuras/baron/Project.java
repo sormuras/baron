@@ -24,7 +24,7 @@ public interface Project {
       var groupName = group.getFileName().toString();
       var groupLayout = Layout.of(root.resolve(group));
       var groupDestination = groups.length == 1 ? destination : destination.resolve(groupName);
-      var groupBuilder = builder.groupBegin(groupName);
+      var groupBuilder = builder.group(groupName);
       groupBuilder.destination(groupDestination);
       groupBuilder.moduleSourcePath(List.of(groupLayout.resolveModuleSourcePath(group, groupName)));
       groupBuilder.end();
