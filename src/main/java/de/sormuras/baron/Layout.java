@@ -19,6 +19,8 @@ public enum Layout {
 
   private static final System.Logger LOG = System.getLogger(Layout.class.getName());
 
+  private static final Pattern MODULE_NAME_PATTERN = Pattern.compile("(module)\\s+(.+)\\s*\\{.*");
+
   public static Layout of(Path root) {
     if (Files.notExists(root)) {
       return AUTO;
@@ -42,16 +44,16 @@ public enum Layout {
         }
         return MAVEN;
       }
+
+      throw new UnsupportedOperationException(
+          "can't detect layout for " + root + " -- found module " + name + " in " + path);
     } catch (Exception e) {
       throw new Error("detection failed " + e, e);
     }
-
-    throw new UnsupportedOperationException("can't detect layout for " + root);
   }
 
   static String readModuleName(String moduleSource) {
-    var namePattern = Pattern.compile("(module)\\s+(.+)\\s*\\{.*");
-    var nameMatcher = namePattern.matcher(moduleSource);
+    var nameMatcher = MODULE_NAME_PATTERN.matcher(moduleSource);
     if (!nameMatcher.find()) {
       throw new IllegalArgumentException(
           "expected java module descriptor unit, but got: \n" + moduleSource);
