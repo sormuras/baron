@@ -6,16 +6,34 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
 
-/** Source directory module tree layout/scheme. */
+/** Source directory module tree layout. */
 public enum Layout {
-  /** Auto-detect at configuration time. */
-  AUTO,
-
-  /** Module folder first, no tests: {@code <module>/module-info.java} */
+  /**
+   * Module descriptor resides in folder with same name as the module.
+   *
+   * <ul>
+   *   <li>Pattern: {@code <root>/<module name>/module-info.java}
+   *   <li>Example: {@code src/com.greetings/module-info.java} containing {@code module
+   *       com.greetings {...}}
+   * </ul>
+   */
   BASIC,
 
-  /** Source set folder first, no module name: {@code [main|test|...]/java/module-info.java} */
-  MAVEN;
+  /**
+   * Module group folder first and no module name but "java" in the directory hierarchy.
+   *
+   * <ul>
+   *   <li>Pattern: {@code {@code <root>/[main|test|...]/java/module-info.java}}
+   *   <li>Example: {@code src/main/java/module-info.java} containing {@code module com.greetings
+   *       {...}}
+   * </ul>
+   */
+  MAVEN {
+    @Override
+    public Path resolveModuleSourcePath(Path root, String groupName) {
+      return root.resolve(groupName).resolve("java");
+    }
+  };
 
   private static final System.Logger LOG = System.getLogger(Layout.class.getName());
 
@@ -23,7 +41,10 @@ public enum Layout {
 
   public static Layout of(Path root) {
     if (Files.notExists(root)) {
-      return AUTO;
+      throw new IllegalArgumentException("root path must exist: " + root);
+    }
+    if (!Files.isDirectory(root)) {
+      throw new IllegalArgumentException("root path must be a directory: " + root);
     }
     try {
       var path =
@@ -59,5 +80,9 @@ public enum Layout {
           "expected java module descriptor unit, but got: \n" + moduleSource);
     }
     return nameMatcher.group(2).trim();
+  }
+
+  public Path resolveModuleSourcePath(Path root, String groupName) {
+    return root;
   }
 }
