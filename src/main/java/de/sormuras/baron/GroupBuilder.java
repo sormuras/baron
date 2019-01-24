@@ -24,8 +24,8 @@ public class GroupBuilder implements Group {
     this.moduleSourcePath = List.of(Path.of("src", name, "java"));
   }
 
-  public ProjectBuilder end() {
-    projectBuilder.moduleGroups().put(name, this);
+  public ProjectBuilder buildGroup() {
+    projectBuilder.groups().put(name, this);
     return projectBuilder;
   }
 

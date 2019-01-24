@@ -7,16 +7,25 @@ import java.util.TreeMap;
 /** A mutable project. */
 public class ProjectBuilder implements Project {
 
-  private String name = Path.of(".").toAbsolutePath().normalize().getFileName().toString();
-  private String version = "1.0.0-SNAPSHOT";
-  private Path target = Path.of("target", "bach");
-  private Map<String, Group> groups = new TreeMap<>();
+  private final Path root;
+  private String name;
+  private String version;
+  private Path target;
+  private Map<String, Group> groups;
 
-  public Project build() {
+  ProjectBuilder(Path root) {
+    this.root = root.normalize().toAbsolutePath();
+    this.name = this.root.getFileName().toString();
+    this.target = this.root.resolve("target").resolve("bach");
+    this.version = "1.0.0-SNAPSHOT";
+    this.groups = new TreeMap<>();
+  }
+
+  public Project buildProject() {
     return this;
   }
 
-  public GroupBuilder group(String name) {
+  public GroupBuilder groupBuilder(String name) {
     if (groups.containsKey(name)) {
       throw new IllegalArgumentException(name + " already defined");
     }
@@ -24,7 +33,7 @@ public class ProjectBuilder implements Project {
   }
 
   @Override
-  public Map<String, Group> moduleGroups() {
+  public Map<String, Group> groups() {
     return groups;
   }
 
@@ -36,6 +45,11 @@ public class ProjectBuilder implements Project {
   public ProjectBuilder name(String name) {
     this.name = name;
     return this;
+  }
+
+  @Override
+  public Path root() {
+    return root;
   }
 
   @Override
