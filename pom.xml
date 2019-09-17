@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.4.0-M1</version>
+            <version>5.4.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -31,7 +31,7 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
+                    <version>3.8.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -41,7 +41,7 @@
             <plugin>
                 <groupId>com.coveo</groupId>
                 <artifactId>fmt-maven-plugin</artifactId>
-                <version>2.7</version>
+                <version>2.9</version>
                 <configuration>
                     <additionalSourceDirectories>
                         <param>demo</param>
